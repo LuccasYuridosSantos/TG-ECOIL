@@ -5,6 +5,7 @@ import com.tg.ecoil.model.api.ScheduleRequest;
 import com.tg.ecoil.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/scheduler")
+@RequestMapping(value = "/scheduler",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchedulerController {
 
     private final ScheduleService service;
@@ -32,7 +35,8 @@ public class SchedulerController {
     }
 
     @GetMapping("/grouped")
-    public ResponseEntity<GroupScheduleResponse> createGroupedSchedule(@RequestParam final String userId, @RequestParam final Boolean completed) {
+    public ResponseEntity<GroupScheduleResponse> createGroupedSchedule(@RequestParam final String userId,
+                                                                       @RequestParam final Boolean completed) {
         final var response = service.findGroupedSchedule(userId, completed);
         return ResponseEntity.ok(response);
     }
