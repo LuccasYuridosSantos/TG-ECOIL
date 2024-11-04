@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ecoil
+  profiles:
+    active:
+      - default
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ecoil?directConnection=true
