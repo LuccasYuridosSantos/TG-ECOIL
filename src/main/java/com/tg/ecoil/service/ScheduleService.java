@@ -3,6 +3,7 @@ package com.tg.ecoil.service;
 import com.tg.ecoil.mappers.ScheduleMapper;
 import com.tg.ecoil.model.api.GroupScheduleResponse;
 import com.tg.ecoil.model.api.ScheduleRequest;
+import com.tg.ecoil.model.api.ScheduleResponse;
 import com.tg.ecoil.model.dto.Schedule;
 import com.tg.ecoil.repository.ScheduleRepository;
 import jakarta.validation.Valid;
@@ -26,9 +27,10 @@ public class ScheduleService {
     private final ScheduleMapper mapper;
 
 
-    public void createSchedule(final ScheduleRequest request) {
-        final Schedule schedule = mapper.mapToSchedule(request);
-        repository.save(schedule);
+    public ScheduleResponse createSchedule(final ScheduleRequest request) {
+        final var schedule = mapper.mapToSchedule(request);
+        final var response = repository.save(schedule);
+        return mapper.mapToScheduleResponse(response);
     }
 
     public GroupScheduleResponse findGroupedSchedule(final String userId,

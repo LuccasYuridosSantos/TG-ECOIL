@@ -12,9 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "schedules")
 public class Schedule {
 
@@ -42,5 +39,90 @@ public class Schedule {
     private LocalDate date;
 
     private boolean completed;
+
+    public Schedule() {
+    }
+
+    public Schedule(final String id,
+                    final String userId,
+                    final String name,
+                    final String time,
+                    final String location,
+                    final String description,
+                    final LocalDate date,
+                    final boolean completed) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.time = time;
+        this.location = location;
+        this.description = description;
+        this.date = date;
+        this.completed = completed;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(final String userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(final String time) {
+        this.time = time;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(final String location) {
+        this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(final LocalDate date) {
+        this.date = date;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(final boolean completed) {
+        this.completed = completed;
+    }
 }
 
