@@ -1,9 +1,11 @@
 spring:
   application:
-    name: ecoil
-  profiles:
-    active:
-      - default
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/ecoil?directConnection=true
+    name: tg-ecoil
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecoil
+    username: postgres
+    password: postgres
+    jpa:
+      hibernate:
+        ddl-auto: update
+        show-sql: true

@@ -1,18 +1,21 @@
 version: "3.7"
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
+  postgres:
+    image: postgres:latest
     ports:
-      - "27017:27017"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecoil
     volumes:
-      - mongo-data:/data/db
+      - postgres-data:/var/lib/postgresql/data
     networks:
-      - mongo
+        - ecoil-network
 
 volumes:
-  mongo-data:
+    postgres-data:
 
 networks:
-  mongo:
+    ecoil-network:
