@@ -1,5 +1,6 @@
 package com.project.tgecoil.service;
 
+import com.project.tgecoil.exceptions.ResourceNotFoundException;
 import com.project.tgecoil.mappers.ScheduleMapper;
 import com.project.tgecoil.model.api.GroupScheduleResponse;
 import com.project.tgecoil.model.api.ScheduleRequest;
@@ -48,25 +49,23 @@ public class ScheduleService {
     }
 
     public void completeSchedule(final Long id) {
-        repository.findById(id)
-                .ifPresentOrElse(schedule -> {
-                    schedule.setCompleted(true);
-                    repository.save(schedule);
-                }, () -> {
-                    throw new RuntimeException("Schedule not found with id " + id);
-                });
+        repository.findById(id).ifPresentOrElse(schedule -> {
+            schedule.setCompleted(true);
+            repository.save(schedule);
+        }, () -> {
+            throw new ResourceNotFoundException("Schedule not found with %s" + id);
+        });
     }
 
     public void editSchedule(final Long id,
                              final @Valid ScheduleRequest request) {
-        repository.findById(id)
-                .ifPresentOrElse(schedule -> {
-                    final Schedule updatedSchedule = mapper.mapToSchedule(request);
-                    updatedSchedule.setId(id);
-                    repository.save(updatedSchedule);
-                }, () -> {
-                    throw new RuntimeException("Schedule not found with id " + id);
-                });
+        repository.findById(id).ifPresentOrElse(schedule -> {
+            final Schedule updatedSchedule = mapper.mapToSchedule(request);
+            updatedSchedule.setId(id);
+            repository.save(updatedSchedule);
+        }, () -> {
+            throw new ResourceNotFoundException("Schedule not found with id %s", id);
+        });
     }
 
     public void deleteSchedule(final Long id) {

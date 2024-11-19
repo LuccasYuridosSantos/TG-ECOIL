@@ -26,5 +26,11 @@ CREATE TABLE schedule (
     location VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     date DATE NOT NULL,
-    completed BOOLEAN
+    completed BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE user_claim (
+                            id SERIAL PRIMARY KEY,
+                            user_id VARCHAR(255) NOT NULL,
+                            admin BOOLEAN DEFAULT FALSE
 );

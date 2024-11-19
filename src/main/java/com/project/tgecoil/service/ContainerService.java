@@ -28,8 +28,9 @@ public class ContainerService {
     }
 
     public ContainerResponse getContainerById(final Long id) {
-        return repository.findById(id).map(mapper::toContainerResponse)
-                .orElseThrow(() -> new ResourceNotFoundException("Container not found with id {}", id));
+        return repository.findById(id)
+                .map(mapper::toContainerResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Container not found with id %s", id));
     }
 
     public void updateContainer(final Long id,
@@ -39,7 +40,7 @@ public class ContainerService {
             updatedContainer.setId(id);
             repository.save(updatedContainer);
         }, () -> {
-            throw new ResourceNotFoundException("Container not found with id {}", id);
+            throw new ResourceNotFoundException("Container not found with id %s", id);
         });
     }
 

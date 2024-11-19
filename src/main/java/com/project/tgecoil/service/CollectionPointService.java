@@ -40,7 +40,7 @@ public class CollectionPointService {
             collectionPoint.setId(id);
             repository.save(collectionPoint);
         }, () -> {
-            throw new ResourceNotFoundException("Collection point not found with id {}", id);
+            throw new ResourceNotFoundException("Collection point not found with id %s", id);
         });
     }
 
