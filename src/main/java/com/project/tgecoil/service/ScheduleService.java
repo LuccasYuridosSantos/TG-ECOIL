@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @RequiredArgsConstructor
@@ -34,19 +34,24 @@ public class ScheduleService {
         return mapper.mapToScheduleResponse(response);
     }
 
-    public GroupScheduleResponse findGroupedSchedule(final String userId,
-                                                     final Boolean completed) {
-        final var filteredSchedules = Optional.ofNullable(repository.findAllByUserId(userId))
-                .filter(ObjectUtils::isNotEmpty)
-                .map(list -> completed ? list.stream().filter(Schedule::isCompleted).collect(Collectors.toList()) :
-                        list)
-                .orElse(Collections.emptyList());
+    public GroupScheduleResponse findGroupedSchedule(final String userId, final Boolean completed) {
+    final var schedules = Optional.ofNullable(repository.findAll())
+            .filter(ObjectUtils::isNotEmpty)
+            .orElse(Collections.emptyList());
 
-        final var groupedSchedules = filteredSchedules.stream()
-                .collect(groupingBy(Schedule::getDate, mapping(mapper::mapToScheduleResponse, toList())));
+    final var filteredSchedules = completed ? schedules.stream()
+            .filter(Schedule::isCompleted)
+            .toList() : schedules;
 
-        return new GroupScheduleResponse(groupedSchedules);
-    }
+    final var result = isNotBlank(userId) ? filteredSchedules.stream()
+            .filter(schedule -> userId.equals(schedule.getUserId()))
+            .toList() : filteredSchedules;
+
+    final var groupedSchedules = result.stream()
+            .collect(groupingBy(Schedule::getDate, mapping(mapper::mapToScheduleResponse, toList())));
+
+    return new GroupScheduleResponse(groupedSchedules);
+}
 
     public void completeSchedule(final Long id) {
         repository.findById(id).ifPresentOrElse(schedule -> {
