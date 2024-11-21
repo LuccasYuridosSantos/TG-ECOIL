@@ -48,4 +48,9 @@ public class CollectionPointService {
     public void delete(final Long id) {
         repository.deleteById(id);
     }
+
+    public List<CollectionPointResponse> createBatch(final @Valid List<CollectionPointRequest> requests) {
+        final var result = repository.saveAll(mapper.toCollectionPoints(requests));
+        return mapper.toCollectionPointResponse(result);
+    }
 }

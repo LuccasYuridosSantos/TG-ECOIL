@@ -39,6 +39,13 @@ public class CollectionPointController {
         return ResponseEntity.ok(service.create(request));
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<List<CollectionPointResponse>> createCollectionPoints(
+            @Valid @RequestBody List<CollectionPointRequest> requests) {
+        return ResponseEntity.ok(service.createBatch(requests));
+    }
+
+
     @GetMapping
     public ResponseEntity<List<CollectionPointResponse>> getAllCollectionPoints() {
         return ResponseEntity.ok(service.getAll());
