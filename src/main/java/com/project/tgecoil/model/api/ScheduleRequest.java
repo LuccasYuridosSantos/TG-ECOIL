@@ -14,7 +14,7 @@ public record ScheduleRequest(@NotBlank(message = "Name is required")
                               String userId,
 
                               @NotBlank(message = "Time is required")
-                              @Pattern(regexp = "^\\d{2}:\\d{2}\\p{Zs}*(AM|PM)$", message = "Time must be in the format 'hh:mm AM/PM'")
+                              @Pattern(regexp = "^\\d(1|2):\\d{2}\\p{Zs}*(AM|PM)$", message = "Time must be in the format 'hh:mm AM/PM'")
                               String time,
 
                               @NotBlank(message = "Location is required")
