@@ -1,7 +1,9 @@
 package com.project.tgecoil.mappers;
 
+import com.project.tgecoil.client.vo.OpenStreetMapResponse;
 import com.project.tgecoil.model.api.CollectionPointRequest;
 import com.project.tgecoil.model.api.CollectionPointResponse;
+import com.project.tgecoil.model.dto.Address;
 import com.project.tgecoil.model.dto.CollectionPoint;
 import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
@@ -18,4 +20,6 @@ public interface CollectionPointMapper {
     List<CollectionPointResponse> toCollectionPointResponse(final List<CollectionPoint> collectionPoints);
 
     Iterable<CollectionPoint> toCollectionPoints(@Valid List<CollectionPointRequest> requests);
+
+    Address toAddress(final OpenStreetMapResponse.Address address);
 }

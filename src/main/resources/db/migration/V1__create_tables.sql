@@ -1,13 +1,34 @@
 -- V1__create_tables.sql
 
+CREATE TABLE address (
+                         id SERIAL PRIMARY KEY,
+                         road VARCHAR(255),
+                         municipality VARCHAR(255),
+                         county VARCHAR(255),
+                         state VARCHAR(255),
+                         region VARCHAR(255),
+                         postcode VARCHAR(20),
+                         country VARCHAR(100),
+                         city_district VARCHAR(255),
+                         state_district VARCHAR(255),
+                         iso3166lvl4 VARCHAR(10),
+                         country_code VARCHAR(10)
+);
+
 CREATE TABLE collection_point (
     id SERIAL PRIMARY KEY,
     city VARCHAR(255),
     state VARCHAR(255),
     latitude VARCHAR(255),
     longitude VARCHAR(255),
-    name VARCHAR(255)
+    name VARCHAR(255),
+    address_id BIGINT,
+    CONSTRAINT fk_address
+        FOREIGN KEY (address_id)
+        REFERENCES address(id)
 );
+
+
 
 CREATE TABLE container (
     id SERIAL PRIMARY KEY,
@@ -30,7 +51,7 @@ CREATE TABLE schedule (
 );
 
 CREATE TABLE user_claim (
-                            id SERIAL PRIMARY KEY,
-                            user_id VARCHAR(255) NOT NULL,
-                            admin BOOLEAN DEFAULT FALSE
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    admin BOOLEAN DEFAULT FALSE
 );

@@ -1,10 +1,20 @@
 package com.project.tgecoil.model.api;
 
-public record CollectionPointResponse(
-        Long id,
-        String city,
-        String state,
-        String latitude,
-        String longitude,
-        String name
-) {}
+import com.project.tgecoil.client.vo.OpenStreetMapResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CollectionPointResponse {
+    private Long id;
+    private String city;
+    private String state;
+    private String latitude;
+    private String longitude;
+    private String name;
+    private OpenStreetMapResponse.Address address;
+}
