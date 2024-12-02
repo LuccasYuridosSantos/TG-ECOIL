@@ -3,8 +3,10 @@ package com.project.tgecoil.controller;
 import com.project.tgecoil.model.api.GroupScheduleResponse;
 import com.project.tgecoil.model.api.ScheduleRequest;
 import com.project.tgecoil.model.api.ScheduleResponse;
+import com.project.tgecoil.model.dto.StatusScheduler;
 import com.project.tgecoil.service.ScheduleService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -48,6 +50,20 @@ public class SchedulerController {
     @PutMapping("/complete/{id}")
     public ResponseEntity<Void> completeSchedule(@PathVariable @NotNull final Long id) {
         service.completeSchedule(id);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/{id}/status/{status}")
+    public ResponseEntity<Void> completeSchedule(@PathVariable("id") @NotNull final Long id,
+                                                 @PathVariable("status") @NotNull final StatusScheduler status) {
+        service.editStatus(id, status);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/accepted/{id}/collector/{userId}")
+    public ResponseEntity<Void> acceptedSchedule(@PathVariable("id") @NotNull final Long id,
+                                                 @PathVariable("userId") @NotBlank final String userId) {
+        service.acceptedScheduler(id, userId);
         return ResponseEntity.accepted().build();
     }
 

@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-import static jakarta.persistence.GenerationType.AUTO;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
@@ -36,8 +35,7 @@ public class Schedule {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Time is required")
-    @Pattern(regexp = "^\\d{1,2}:\\d{2}\\s*(AM|PM)$", message = "Time must be in the format 'hh:mm AM/PM'")
+    @NotBlank(message = "Time is required, Time must be in the format 'hh:mm AM/PM'")
     private String time;
 
     @NotBlank(message = "Location is required")
@@ -50,6 +48,8 @@ public class Schedule {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    private boolean completed;
+    private String collectorUserId;
+
+    private StatusScheduler status;
 
 }
