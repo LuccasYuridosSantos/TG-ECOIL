@@ -1,9 +1,9 @@
 package com.project.tgecoil.model.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.tgecoil.model.dto.Container;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
@@ -18,6 +18,9 @@ public record ScheduleRequest(@NotBlank(message = "Name is required")
 
                               @NotBlank(message = "Location is required")
                               String location,
+
+                              @NotNull
+                              Long recipientId,
 
                               String description,
 

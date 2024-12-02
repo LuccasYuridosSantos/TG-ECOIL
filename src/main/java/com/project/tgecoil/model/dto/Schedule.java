@@ -1,14 +1,16 @@
 package com.project.tgecoil.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +43,10 @@ public class Schedule {
     @NotBlank(message = "Location is required")
     private String location;
 
+    @ManyToOne
+    @JoinColumn(name = "recipient_id")
+    @JsonBackReference
+    private Container recipient;
 
     private String description;
 
@@ -51,5 +57,4 @@ public class Schedule {
     private String collectorUserId;
 
     private StatusScheduler status;
-
 }

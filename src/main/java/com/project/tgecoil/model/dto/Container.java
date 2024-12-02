@@ -1,8 +1,11 @@
 package com.project.tgecoil.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.GenerationType.AUTO;
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
@@ -41,4 +45,8 @@ public class Container {
 
     @NotBlank(message = "Image URL is required")
     private String image;
+
+    @OneToMany(mappedBy = "recipient")
+    @JsonIgnore
+    private List<Schedule> schedules;
 }

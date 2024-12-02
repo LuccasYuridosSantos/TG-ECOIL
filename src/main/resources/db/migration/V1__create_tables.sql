@@ -30,8 +30,6 @@ CREATE TABLE collection_point
             REFERENCES address (id)
 );
 
-
-
 CREATE TABLE container
 (
     id              SERIAL PRIMARY KEY,
@@ -44,15 +42,19 @@ CREATE TABLE container
 
 CREATE TABLE schedule
 (
-    id          SERIAL PRIMARY KEY,
-    user_id     VARCHAR(255) NOT NULL,
-    name        VARCHAR(255) NOT NULL,
-    time        VARCHAR(8)   NOT NULL,
-    location    VARCHAR(255) NOT NULL,
-    description VARCHAR(255),
-    date DATE NOT NULL,
+    id                SERIAL PRIMARY KEY,
+    user_id           VARCHAR(255) NOT NULL,
+    name              VARCHAR(255) NOT NULL,
+    time              VARCHAR(8)   NOT NULL,
+    location          VARCHAR(255) NOT NULL,
+    description       VARCHAR(255),
+    date              DATE         NOT NULL,
     collector_user_id VARCHAR(255),
-    status            VARCHAR(255) NOT NULL
+    status            VARCHAR(255) NOT NULL,
+    recipient_id      BIGINT,
+    CONSTRAINT fk_recipient
+        FOREIGN KEY (recipient_id)
+            REFERENCES container (id)
 );
 
 CREATE TABLE user_claim

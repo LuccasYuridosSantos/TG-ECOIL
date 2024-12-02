@@ -7,6 +7,7 @@ import com.project.tgecoil.model.api.ScheduleRequest;
 import com.project.tgecoil.model.api.ScheduleResponse;
 import com.project.tgecoil.model.dto.Schedule;
 import com.project.tgecoil.model.dto.StatusScheduler;
+import com.project.tgecoil.repository.ContainerRepository;
 import com.project.tgecoil.repository.ScheduleRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
+
 
 import static com.project.tgecoil.model.dto.StatusScheduler.ACEITO;
 import static com.project.tgecoil.model.dto.StatusScheduler.AGUARDANDO;
@@ -32,11 +33,18 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class ScheduleService {
 
     private final ScheduleRepository repository;
+    private final ContainerRepository containerRepository;
     private final ScheduleMapper mapper;
+    private final ContainerService containerService;
 
 
     public ScheduleResponse createSchedule(final ScheduleRequest request) {
         final var schedule = mapper.mapToSchedule(request);
+        containerRepository.findById(request.recipientId()).ifPresentOrElse(c -> {
+            schedule.setRecipient(c);
+        }, () -> {
+            throw new ResourceNotFoundException("Container not found with %s" + request.recipientId());
+        });
         schedule.setStatus(AGUARDANDO);
         final var response = repository.save(schedule);
         return mapper.mapToScheduleResponse(response);
@@ -63,7 +71,8 @@ public class ScheduleService {
     }
 
 
-    public void editStatus(final Long id, final StatusScheduler status) {
+    public void editStatus(final Long id,
+                           final StatusScheduler status) {
         repository.findById(id).ifPresentOrElse(schedule -> {
             schedule.setStatus(status);
             repository.save(schedule);
@@ -81,6 +90,11 @@ public class ScheduleService {
         repository.findById(id).ifPresentOrElse(schedule -> {
             final Schedule updatedSchedule = mapper.mapToSchedule(request);
             updatedSchedule.setId(id);
+            containerRepository.findById(request.recipientId()).ifPresentOrElse(c -> {
+                updatedSchedule.setRecipient(c);
+            }, () -> {
+                throw new ResourceNotFoundException("Container not found with %s" + id);
+            });
             repository.save(updatedSchedule);
         }, () -> {
             throw new ResourceNotFoundException("Schedule not found with id %s", id);
@@ -92,7 +106,7 @@ public class ScheduleService {
     }
 
     public void acceptedScheduler(final @NotNull Long id,
-                                     final @NotBlank String userId) {
+                                  final @NotBlank String userId) {
         repository.findById(id).ifPresentOrElse(schedule -> {
             schedule.setStatus(ACEITO);
             schedule.setCollectorUserId(userId);
