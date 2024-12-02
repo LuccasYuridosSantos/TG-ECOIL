@@ -56,10 +56,3 @@ CREATE TABLE schedule
         FOREIGN KEY (recipient_id)
             REFERENCES container (id)
 );
-
-CREATE TABLE user_claim
-(
-    id      SERIAL PRIMARY KEY,
-    user_id VARCHAR(255) NOT NULL,
-    admin   BOOLEAN DEFAULT FALSE
-);

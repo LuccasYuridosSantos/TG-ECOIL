@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +46,14 @@ public class SchedulerController {
                                                                                defaultValue = "false")
                                                                        final boolean completed) {
         final var response = service.findGroupedSchedule(userId, completed);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ScheduleResponse>> getSchedulerFilter(@RequestParam(required = false) final StatusScheduler status,
+                                                                     @RequestParam(required = false) final String userId,
+                                                                     @RequestParam(required = false) final String collectorUserId) {
+        final var response = service.getSchedulerFilter(status, userId, collectorUserId);
         return ResponseEntity.ok(response);
     }
 

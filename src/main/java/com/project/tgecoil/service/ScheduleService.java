@@ -14,9 +14,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,6 +28,7 @@ import static com.project.tgecoil.model.dto.StatusScheduler.COMPLETADO;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
@@ -114,5 +117,31 @@ public class ScheduleService {
         }, () -> {
             throw new ResourceNotFoundException("Schedule not found with %s" + id);
         });
+    }
+
+    public List<ScheduleResponse> getSchedulerFilter(final StatusScheduler status,
+                                                     final String userId,
+                                                     final String collectorUserId) {
+        List<Schedule> schedules = repository.findAll();
+
+        if (isNotEmpty(status)) {
+            schedules = schedules.stream()
+                    .filter(schedule -> status.equals(schedule.getStatus()))
+                    .toList();
+        }
+
+        if (isNotBlank(userId)) {
+            schedules = schedules.stream()
+                    .filter(schedule -> userId.equals(schedule.getUserId()))
+                    .toList();
+        }
+
+        if (isNotBlank(collectorUserId)) {
+            schedules = schedules.stream()
+                    .filter(schedule -> collectorUserId.equals(schedule.getCollectorUserId()))
+                    .toList();
+        }
+
+        return mapper.mapToSchedulesResponse(schedules);
     }
 }
