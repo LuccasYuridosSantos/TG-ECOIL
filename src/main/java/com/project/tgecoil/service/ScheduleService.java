@@ -14,13 +14,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 
 import static com.project.tgecoil.model.dto.StatusScheduler.ACEITO;
 import static com.project.tgecoil.model.dto.StatusScheduler.AGUARDANDO;
@@ -38,8 +36,6 @@ public class ScheduleService {
     private final ScheduleRepository repository;
     private final ContainerRepository containerRepository;
     private final ScheduleMapper mapper;
-    private final ContainerService containerService;
-
 
     public ScheduleResponse createSchedule(final ScheduleRequest request) {
         final var schedule = mapper.mapToSchedule(request);
@@ -54,13 +50,13 @@ public class ScheduleService {
     }
 
     public GroupScheduleResponse findGroupedSchedule(final String userId,
-                                                     final Boolean completed) {
+                                                     final StatusScheduler status) {
         final var schedules = Optional.ofNullable(repository.findAll())
                 .filter(ObjectUtils::isNotEmpty)
                 .orElse(Collections.emptyList());
 
-        final var filteredSchedules = completed ? schedules.stream()
-                .filter(s -> COMPLETADO.equals(s.getStatus()))
+        final var filteredSchedules = isNotEmpty(status) ? schedules.stream()
+                .filter(s -> status.equals(s.getStatus()))
                 .toList() : schedules;
 
         final var result = isNotBlank(userId) ? filteredSchedules.stream()

@@ -42,10 +42,9 @@ public class SchedulerController {
 
     @GetMapping("/grouped")
     public ResponseEntity<GroupScheduleResponse> createGroupedSchedule(@RequestParam(required = false) final String userId,
-                                                                       @RequestParam(required = false,
-                                                                               defaultValue = "false")
-                                                                       final boolean completed) {
-        final var response = service.findGroupedSchedule(userId, completed);
+                                                                       @RequestParam(required = false)
+                                                                       final StatusScheduler status) {
+        final var response = service.findGroupedSchedule(userId, status);
         return ResponseEntity.ok(response);
     }
 
